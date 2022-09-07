@@ -1,5 +1,5 @@
 
-public class Account {
+public class Account{
 	
 	String username;
 	String password;
@@ -22,5 +22,7 @@ public class Account {
 	public String getPassword() {
 		return this.password;
 	}
+
+
 	
 }
