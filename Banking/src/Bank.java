@@ -13,21 +13,22 @@ public class Bank {
 		
 	}
 	
-	public static boolean logIn(String username, String password) {
+	public static boolean checkUser(String username) {
 		
 		if (!allAccounts.containsKey(username)) {
 			System.out.println("Username does not exist");
 			return false;
 		}
 		
+		return true;
+	}
+	
+	public static boolean checkPassword(String username, String password) {
 		if(allAccounts.get(username).equals(password)) {
-			System.out.println("Log-in successful");
 			return true;
 		}
 		
-		System.out.println("Incorrect password");
 		return false;
-		
 	}
 	
 	public static void main(String[] args) {
@@ -45,24 +46,41 @@ public class Bank {
 		int firstResponse = sc.nextInt();
 		
 		switch(firstResponse) {
+		
+			// log in case
 			case 1:
 				System.out.println("Enter username");
-				String inputtedUsername = sc.nextLine();
-				String inputtedPassword = sc.nextLine();
-				if (logIn(inputtedUsername, inputtedPassword)) {
-					break;
+				String inputtedUser = sc.next();
+				boolean validUser = checkUser(inputtedUser);
+				if (validUser) {
+					System.out.println("Valid Username. Enter Password:");
+					String inputtedPassword = sc.next();
+					boolean matchingPass = checkPassword(inputtedUser, inputtedPassword);
+					if (matchingPass) {
+						System.out.println("Log-in successful");
+						break;
+					}
+					System.out.println("Incorrect password");
 				}
+				
 				break;
 			
+			// sign up case
 			case 2:
 				System.out.println("Enter new username");
 				break;
 				
+			// invalid choice
 			default:
 				System.out.println("invalid input");
-				break;
+				sc.close();
+				return;
 		}
 		
+		// only get here if successful log in or sign up
+		System.out.println("Select from the following actions:");
+		
+		sc.close();
 	}
 
 }
