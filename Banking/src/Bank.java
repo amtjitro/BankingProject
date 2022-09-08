@@ -6,9 +6,10 @@ public class Bank {
 
 	private static HashMap<String, Account> allAccounts;
 
-	public Account OpenNewAccount(String username, String password) {
+	public static Account OpenNewAccount(String username, String password) {
 
 		Account newAccount = new Account(username, password);
+		allAccounts.put(username, newAccount);
 		return newAccount;
 
 	}
@@ -30,6 +31,12 @@ public class Bank {
 
 		return false;
 	}
+	
+	public static void changePassword(String username, String password) {
+		allAccounts.get(username).setPassword(password);
+	}
+	
+	
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -42,7 +49,9 @@ public class Bank {
 		
 		boolean quitProgram = false;
 		boolean quitOptions = false;
+		boolean passedLogInScreen = true;
 		Account currentAccount = null;
+		
 		System.out.println("***Welcome to the banking system***");
 
 		while (!quitProgram) {
@@ -66,9 +75,29 @@ public class Bank {
 					boolean matchingPass = checkPassword(inputtedUser, inputtedPassword);
 					if (matchingPass) {
 						System.out.println("Log-in successful");
+						currentAccount = allAccounts.get(inputtedUser);
+						
 						break;
 					}
 					System.out.println("Incorrect password");
+					System.out.println("Forgot password? Type yes to reset or no to go back");
+					
+					String yesOrNo = sc.next();
+					
+					switch (yesOrNo) {
+					case "yes":
+						System.out.println("Enter new password");
+						
+						String newPass = sc.next();
+						
+						changePassword(inputtedUser, newPass);
+						
+						System.out.println("Password successfully reset");
+						
+					default:
+						passedLogInScreen = false;
+					}
+					
 				}
 
 				break;
@@ -77,12 +106,16 @@ public class Bank {
 			case 2:
 				System.out.println("Enter new username");
 				String inputtedNewUser = sc.next();
-
-				System.out.println("Enter password");
-				String inputtedNewPass = sc.next();
-
-				Account newSignUp = new Account(inputtedNewUser, inputtedNewPass);
-
+				
+				if (allAccounts.containsKey(inputtedNewUser)) {
+					System.out.println("Username taken.");
+					passedLogInScreen = false;
+				} else {
+					System.out.println("Enter password");
+					String inputtedNewPass = sc.next();
+					currentAccount = OpenNewAccount(inputtedNewUser, inputtedNewPass);
+				}
+				
 				break;
 
 			// quit
@@ -92,12 +125,19 @@ public class Bank {
 				return;
 			}
 			
-//			while (!quitOptions) {
-//				// only get here if successful log in or sign up
-//				System.out.println("Select from the following actions:");
-//			}
-
-			//quitProgram = true;
+			while (passedLogInScreen & !quitOptions) {
+				// only get here if successful log in or sign up
+				System.out.println("Select from the following actions:");
+				System.out.println("1. Open Money Market account");
+				System.out.println("2. Withdraw");
+				System.out.println("2. Deposit");
+				System.out.println("3. Check balance");
+				System.out.println("4. Transfer funds between accounts");
+				
+				
+				
+			}
+			
 
 		}
 
