@@ -98,6 +98,8 @@ public class Bank {
 						passedLogInScreen = false;
 					}
 					
+				} else {
+					passedLogInScreen = false;
 				}
 
 				break;
@@ -114,26 +116,61 @@ public class Bank {
 					System.out.println("Enter password");
 					String inputtedNewPass = sc.next();
 					currentAccount = OpenNewAccount(inputtedNewUser, inputtedNewPass);
+					System.out.println("Account successfully created.");
 				}
 				
 				break;
 
 			// quit
-			default:
+			case 3:
 				System.out.println("Thank you for using this banking system");
 				sc.close();
 				return;
+				
+			default:
+				System.out.println("Invalid selection. Please try again:");
+				passedLogInScreen = false;
+				
 			}
 			
 			while (passedLogInScreen & !quitOptions) {
 				// only get here if successful log in or sign up
-				System.out.println("Select from the following actions:");
-				System.out.println("1. Open Money Market account");
-				System.out.println("2. Withdraw");
+				System.out.println("Enter the corresponding number to your desired option:");
+				//System.out.println("1. Open Money Market account");
+				System.out.println("1. Withdraw");
 				System.out.println("2. Deposit");
 				System.out.println("3. Check balance");
-				System.out.println("4. Transfer funds between accounts");
+				System.out.println("4. Sign out");
+				//System.out.println("4. Transfer funds between accounts");
 				
+				int response = sc.nextInt();
+				
+				switch (response) {
+				case 1:
+					System.out.println("How much would you like to withdraw?");
+					Double withdrawalAmount = sc.nextDouble();
+					currentAccount.withdraw(withdrawalAmount);
+					break;
+					
+				case 2:
+					System.out.println("How much would you like to deposit?");
+					Double depositAmount = sc.nextDouble();
+					currentAccount.deposit(depositAmount);
+					break;
+					
+				case 3:
+					System.out.println("Your current balance in your account is: $" + currentAccount.getBalance());
+					break;
+					
+				case 4:
+					System.out.println("Successfully signed out.");
+					quitOptions = true;
+					break;
+					
+				default:
+					System.out.println("Invalid selection. Please try again:");
+					break;
+				}
 				
 				
 			}

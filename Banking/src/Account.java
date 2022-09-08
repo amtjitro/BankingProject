@@ -34,4 +34,41 @@ public class Account{
 		return this.balance;
 	}
 	
+	private boolean sufficientFunds(Double requested) {
+		if (this.balance < requested) {
+			System.out.println("Insufficient funds. Current Balance: $" + getBalance() + ". Requested Balance: $" + requested);
+			return false;
+		}
+		return true;
+	}
+	
+	public Double withdraw(Double amount) {
+		
+		//can't withdraw negative amount
+		if (amount < 0) {
+			System.out.println("Cannot withdraw negative amount.");
+			return this.balance;
+		}
+		
+		if (sufficientFunds(amount)) {
+			this.balance -= amount;
+			System.out.println("Successful withdrawal. Account Balance is: $" + getBalance());
+		}
+		return this.balance;
+
+	}
+	
+	public Double deposit(Double amount) {
+		
+		//can't withdraw negative amount
+		if (amount < 0) {
+			System.out.println("Cannot deposit negative amount.");
+			return this.balance;
+		}
+		
+		this.balance+= amount;
+		System.out.println("Successful deposit. Account Balance is: $" + getBalance());
+		return this.balance;
+	}
+	
 }
