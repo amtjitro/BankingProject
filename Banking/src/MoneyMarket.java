@@ -1,30 +1,14 @@
-public class Account{
-	
-	String username;
-	String password;
+
+public class MoneyMarket implements Accnt{
+
 	Double balance;
 	
-	public Account(String username, String password) {
-		this.username = username;
-		this.password = password.toString();
+	public MoneyMarket () {
 		this.balance = 0.0;
 	}
-
 	
 	public void setBalance(Double balance) {
 		this.balance = balance;
-	}
-	
-	public String getUsername() {
-		return this.username;
-	}
-	
-	public String getPassword() {
-		return this.password;
-	}
-	
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public Double getBalance() {
@@ -49,7 +33,7 @@ public class Account{
 		
 		if (sufficientFunds(amount)) {
 			this.balance -= amount;
-			System.out.println("Successful withdrawal. Account Balance is: $" + getBalance());
+			System.out.println("Successful withdrawal. Checkings Account Balance is: $" + getBalance());
 		}
 		return this.balance;
 
@@ -64,8 +48,12 @@ public class Account{
 		}
 		
 		this.balance+= amount;
-		System.out.println("Successful deposit. Account Balance is: $" + getBalance());
+		System.out.println("Successful deposit. Checkings Account Balance is: $" + getBalance());
 		return this.balance;
+	}
+	
+	public boolean transferFunds(Double transferAmount, Accnt accnt) {
+		return false;
 	}
 	
 }

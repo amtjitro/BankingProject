@@ -4,11 +4,12 @@ import java.util.HashMap;
 
 public class Bank {
 
-	private static HashMap<String, Account> allAccounts;
+	private static HashMap<String, Savings> allAccounts;
+	//private static HashMap<Account, Savings> savings;
 
-	public static Account OpenNewAccount(String username, String password) {
+	public static Savings OpenNewAccount(String username, String password) {
 
-		Account newAccount = new Account(username, password);
+		Savings newAccount = new Savings(username, password);
 		allAccounts.put(username, newAccount);
 		return newAccount;
 
@@ -42,19 +43,23 @@ public class Bank {
 		// TODO Auto-generated method stub
 
 		Scanner sc = new Scanner(System.in);
-		allAccounts = new HashMap<String, Account>();
+		allAccounts = new HashMap<String, Savings>();
 		
-		Account a = new Account("user", "pass");
+		Savings a = new Savings("user", "pass");
 		allAccounts.put("user", a);
 		
 		boolean quitProgram = false;
 		boolean quitOptions = false;
-		boolean passedLogInScreen = true;
-		Account currentAccount = null;
+		
+		Savings currentAccount = null;
 		
 		System.out.println("***Welcome to the banking system***");
 
 		while (!quitProgram) {
+			
+			//needs to reset every iteration
+			boolean passedLogInScreen = true;
+			
 			System.out.println("Enter the corresponding number to your desired option:");
 			System.out.println("1. Log In");
 			System.out.println("2. Sign Up");
@@ -135,13 +140,13 @@ public class Bank {
 			
 			while (passedLogInScreen & !quitOptions) {
 				// only get here if successful log in or sign up
-				System.out.println("Enter the corresponding number to your desired option:");
-				//System.out.println("1. Open Money Market account");
+				System.out.println("You are currently in your savings account. Enter the corresponding number to your desired option:");
 				System.out.println("1. Withdraw");
 				System.out.println("2. Deposit");
 				System.out.println("3. Check balance");
-				System.out.println("4. Sign out");
-				//System.out.println("4. Transfer funds between accounts");
+				System.out.println("4. Open new Money Market account");
+				System.out.println("5. Transfer funds");
+				System.out.println("6. Sign out");
 				
 				int response = sc.nextInt();
 				
@@ -163,6 +168,86 @@ public class Bank {
 					break;
 					
 				case 4:
+					if (currentAccount.accounts.size() == 2) {
+						System.out.println("Money Market account already exists.");
+						break;
+					}
+					else {
+						currentAccount.OpenMM();
+						System.out.println("Money Market account successfully created");
+						break;
+					}
+					
+				case 5:
+					System.out.println("Which accounts would you like to transfer between?");
+					System.out.println("1. Savings to Checkings");
+					System.out.println("2. Savings to Money Market");
+					System.out.println("3. Checkings to Savings");
+					int choice = sc.nextInt();
+					
+//					System.out.println("How much would you like to transfer?");
+//					Double transferAmount = sc.nextDouble();
+//					
+//					if (transferAmount < 0) {
+//						System.out.println("Error: cannot transfer negative amount.");
+//					}
+					
+					switch (choice) {
+					case 1:
+						
+						System.out.println("How much would you like to transfer?");
+						Double transferAmount = sc.nextDouble();
+						
+						if (transferAmount < 0) {
+							System.out.println("Error: cannot transfer negative amount.");
+						}
+						
+						if (currentAccount.transferFunds(transferAmount, currentAccount.accounts.get(0))) {
+							System.out.println("Successful transfer. Savings account Balance is: $" + currentAccount.getBalance());
+							System.out.println("Checkings account Balance is: $" + currentAccount.accounts.get(0).getBalance());
+						}
+						break;
+						
+					case 2:
+						
+						System.out.println("How much would you like to transfer?");
+						Double transferAmount2 = sc.nextDouble();
+						
+						if (transferAmount2 < 0) {
+							System.out.println("Error: cannot transfer negative amount.");
+						}
+						
+						if (currentAccount.transferFunds(transferAmount2, currentAccount.accounts.get(1))) {
+							System.out.println("Successful transfer. Savings account Balance is: $" + currentAccount.getBalance());
+							System.out.println("Money Market account Balance is: $" + currentAccount.accounts.get(1).getBalance());
+						}
+						break;
+						
+						
+					case 3:
+						
+						System.out.println("How much would you like to transfer?");
+						Double transferAmount3 = sc.nextDouble();
+						
+						if (transferAmount3 < 0) {
+							System.out.println("Error: cannot transfer negative amount.");
+						}
+						
+						if (currentAccount.accounts.get(0).transferFunds(transferAmount3, currentAccount)) {
+							System.out.println("Successful transfer. Checkings account Balance is: $" + currentAccount.accounts.get(0).getBalance());
+							System.out.println("Savings Balance is: $" + currentAccount.getBalance());
+						}
+						break;
+						
+					default:
+						System.out.println("Invalid Choice.");
+						break;
+					}
+					
+					break;
+					
+					
+				case 6:
 					System.out.println("Successfully signed out.");
 					quitOptions = true;
 					break;

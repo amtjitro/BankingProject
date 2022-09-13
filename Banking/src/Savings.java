@@ -1,15 +1,20 @@
-public class Account{
+import java.util.ArrayList;
+import java.util.LinkedList;
+
+public class Savings implements Accnt{
 	
 	String username;
 	String password;
 	Double balance;
-	
-	public Account(String username, String password) {
+	//LinkedList<Accnt> accounts = new LinkedList<Accnt>();
+	ArrayList<Accnt> accounts = new ArrayList<Accnt>();
+
+	public Savings(String username, String password) {
 		this.username = username;
 		this.password = password.toString();
 		this.balance = 0.0;
+		this.accounts.add(new Checkings());
 	}
-
 	
 	public void setBalance(Double balance) {
 		this.balance = balance;
@@ -33,7 +38,7 @@ public class Account{
 	
 	public boolean sufficientFunds(Double requested) {
 		if (this.balance < requested) {
-			System.out.println("Insufficient funds. Current Balance: $" + getBalance() + ". Requested Balance: $" + requested);
+			System.out.println("Insufficient funds. Current Savings Balance: $" + getBalance() + ". Requested Balance: $" + requested);
 			return false;
 		}
 		return true;
@@ -49,7 +54,7 @@ public class Account{
 		
 		if (sufficientFunds(amount)) {
 			this.balance -= amount;
-			System.out.println("Successful withdrawal. Account Balance is: $" + getBalance());
+			System.out.println("Successful withdrawal. Savings account Balance is: $" + getBalance());
 		}
 		return this.balance;
 
@@ -64,8 +69,22 @@ public class Account{
 		}
 		
 		this.balance+= amount;
-		System.out.println("Successful deposit. Account Balance is: $" + getBalance());
+		System.out.println("Successful deposit. Savings account Balance is: $" + getBalance());
 		return this.balance;
 	}
 	
+	public void OpenMM() {
+		MoneyMarket newAcc = new MoneyMarket();
+		accounts.add(newAcc);
+	}
+	
+	public boolean transferFunds(Double amount, Accnt to) {
+		if (sufficientFunds(amount)) {
+			this.balance-= amount;
+			to.setBalance(to.getBalance()+amount);
+		}
+		return false;
+	}
+	
+
 }

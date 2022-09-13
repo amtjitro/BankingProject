@@ -1,30 +1,14 @@
-public class Account{
-	
-	String username;
-	String password;
+
+public class Checkings implements Accnt {
+
 	Double balance;
 	
-	public Account(String username, String password) {
-		this.username = username;
-		this.password = password.toString();
+	public Checkings () {
 		this.balance = 0.0;
 	}
-
 	
 	public void setBalance(Double balance) {
 		this.balance = balance;
-	}
-	
-	public String getUsername() {
-		return this.username;
-	}
-	
-	public String getPassword() {
-		return this.password;
-	}
-	
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public Double getBalance() {
@@ -33,7 +17,7 @@ public class Account{
 	
 	public boolean sufficientFunds(Double requested) {
 		if (this.balance < requested) {
-			System.out.println("Insufficient funds. Current Balance: $" + getBalance() + ". Requested Balance: $" + requested);
+			System.out.println("Insufficient funds. Current Checkings Balance: $" + getBalance() + ". Requested Balance: $" + requested);
 			return false;
 		}
 		return true;
@@ -49,7 +33,7 @@ public class Account{
 		
 		if (sufficientFunds(amount)) {
 			this.balance -= amount;
-			System.out.println("Successful withdrawal. Account Balance is: $" + getBalance());
+			System.out.println("Successful withdrawal. Checkings Account Balance is: $" + getBalance());
 		}
 		return this.balance;
 
@@ -64,8 +48,16 @@ public class Account{
 		}
 		
 		this.balance+= amount;
-		System.out.println("Successful deposit. Account Balance is: $" + getBalance());
+		System.out.println("Successful deposit. Checkings Account Balance is: $" + getBalance());
 		return this.balance;
+	}
+	
+	public boolean transferFunds(Double amount, Accnt to) {
+		if (sufficientFunds(amount)) {
+			this.balance-= amount;
+			to.setBalance(to.getBalance()+amount);
+		}
+		return false;
 	}
 	
 }
